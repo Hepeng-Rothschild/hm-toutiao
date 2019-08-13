@@ -5,7 +5,9 @@ import 'element-ui/lib/theme-chalk/index.css'
 import router from '@/router'
 // 导入样式
 import '@/styles/index.less'
-import axios from 'axios'
+import axios from '@/api'
+import myPlugin from '@/components/main.js'
+Vue.use(myPlugin)
 Vue.prototype.$http = axios
 // import router from './router/index.js'
 // @是一个路径的别名   是src路径   只有在vue-cli项目下有效

@@ -28,20 +28,23 @@
 </template>
 
 <script>
+import store from '@/store'
 export default {
   data () {
     // 自定义校验函数
     const checkMobile = (rule, value, callback) => {
       // 按照自己的校验逻辑去校验值value即可
-      if (!/^1[3-9]\d{9}/.test(value)) { return callback(new Error('手机格式不对')) }
+      if (!/^1[3-9]\d{9}/.test(value)) {
+        return callback(new Error('手机格式不对'))
+      }
       callback()
     }
     return {
       // 表单的数据对象
       loginForm: {
         // 字段参考接口文档
-        mobile: '',
-        code: ''
+        mobile: '13911111111',
+        code: '246810'
       },
       // 校验规则对象
       loginRules: {
@@ -79,22 +82,34 @@ export default {
   methods: {
     login () {
       // 1.对整个表单进行校验
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate(async valid => {
         if (valid) {
-          // 2.校验成功发起登录请求
-          this.$http
-            .post(
-              'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
-              this.loginForm
-            )
-            .then(res => {
-              // res 是响应对象，res.data数据属于响应主体
-              this.$router.push('/')
-            })
-            .catch(() => {
-              // 请求失败提示验证码或手机号错误
-              this.$message.error('手机号或验证码错误')
-            })
+          //     // 2.校验成功发起登录请求
+          //     this.$http
+          //       .post(
+          //         "http://ttapi.research.itcast.cn/mp/v1_0/authorizations",
+          //         this.loginForm
+          //       )
+          //       .then(res => {
+          //         // res 是响应对象，res.data数据属于响应主体
+          //         //存储用户信息
+          //         store.setUser(res.data.data);
+
+          //         this.$router.push("/");
+          //       })
+          //       .catch(() => {
+          //         // 请求失败提示验证码或手机号错误
+          //         this.$message.error("手机号或验证码错误");
+          //       });
+          // 怎么去处理await使用的时候失败的请求
+          // 怎么捕获代码运行异常（保存） try{可能会执行报错代码}catch（e）{处理错误}
+          try {
+            const { data: { data } } = await this.$http.post('authorizations', this.loginForm)
+            store.setUser(data)
+            this.$router.push('/')
+          } catch (e) {
+            this.$message.error('手机号或验证码错误')
+          }
         }
       })
     }
