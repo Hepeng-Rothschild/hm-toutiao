@@ -7,6 +7,8 @@ import Welcome from '@/views/welcome'
 import Article from '@/views/article'
 import NotFound from '@/views/404'
 import store from '@/store'
+import Image from '@/views/image'
+import Publish from '@/views/publish'
 Vue.use(VueRouter)
 const router = new VueRouter({
   routes: [{
@@ -37,6 +39,16 @@ const router = new VueRouter({
       path: 'article',
       name: 'article',
       component: Article
+    },
+    {
+      path: '/image',
+      name: 'image',
+      component: Image
+    },
+    {
+      path: '/publish',
+      name: 'publish',
+      component: Publish
     }
     ]
   },
